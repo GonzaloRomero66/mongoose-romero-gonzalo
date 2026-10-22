@@ -9,7 +9,7 @@ export const GetAllUsers = async (req, res) => {
   }
 };
 
-export const UserId = async (req, res) => {
+export const GetUserId = async (req, res) => {
   try {
     const user = await userModel.findById(req.params.id);
 
