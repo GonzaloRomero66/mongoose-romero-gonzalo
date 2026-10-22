@@ -11,6 +11,11 @@ const publicationSchema = new Schema({
   description: {
     type: String,
   },
+  profile_id: {
+    type: Schema.Types.ObjectId,
+    ref: "profile",
+    required: true,
+  },
 });
 
 export default publicationModel = model("publication", publicationSchema);

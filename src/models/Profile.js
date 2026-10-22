@@ -11,6 +11,12 @@ const profileSchema = new Schema({
   avatar: {
     type: String,
   },
+  user_id: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+    required: true,
+    unique: true,
+  },
 });
 
 export default profileModel = model("profile", profileSchema);
