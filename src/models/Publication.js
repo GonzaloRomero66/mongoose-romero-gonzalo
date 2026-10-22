@@ -18,4 +18,5 @@ const publicationSchema = new Schema({
   },
 });
 
-export default publicationModel = model("publication", publicationSchema);
+const publicationModel = model("publication", publicationSchema);
+export default publicationModel;

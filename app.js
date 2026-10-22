@@ -3,7 +3,7 @@ import express from "express";
 import mongoose from "mongoose";
 import userRoutes from "./src/routes/userRoutes.js";
 import profileRoutes from "./src/routes/profileRoutes.js";
-// import publicationRoutes from "./src/routes/publicationRoutes.js";
+import publicationRoutes from "./src/routes/publicationRoutes.js";
 
 dotenv.config();
 
@@ -21,6 +21,7 @@ try {
 
 app.use("/users", userRoutes);
 app.use("/profile", profileRoutes);
+app.use("/publication", publicationRoutes);
 
 const PORT = process.env.PORT;
 
