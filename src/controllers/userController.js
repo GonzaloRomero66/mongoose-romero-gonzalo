@@ -1,7 +1,7 @@
 import { matchedData } from "express-validator";
 import userModel from "../models/User.js";
 import profileModel from "../models/Profile.js";
-
+import publicationModel from "../models/Publication.js";
 export const GetAllUsers = async (req, res) => {
   try {
     const users = await userModel.find().populate("publications");
@@ -68,10 +68,17 @@ export const DeleteUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
-    await profileModel.findOneAndUpdate(
+    const profile = await profileModel.findOneAndUpdate(
       { user_id: user._id },
       { deleted: true },
+      { returnDocument: "after" },
     );
+    if (profile) {
+      await publicationModel.updateMany(
+        { profile_id: profile._id },
+        { deleted: true },
+      );
+    }
     res.status(200).json({
       message: "Usuario eliminado correctamente",
     });
