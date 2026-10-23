@@ -1,3 +1,4 @@
+import { matchedData } from "express-validator";
 import profileModel from "../models/Profile.js";
 
 export const GetAllProfile = async (req, res) => {
@@ -24,7 +25,8 @@ export const GetProfileId = async (req, res) => {
 
 export const CreateProfile = async (req, res) => {
   try {
-    const profile = await profileModel.create(req.body);
+    const data = matchedData(req, { locations: ["body"] });
+    const profile = await profileModel.create(data);
     res.status(201).json(profile);
   } catch (error) {
     console.log(error);
@@ -34,14 +36,11 @@ export const CreateProfile = async (req, res) => {
 
 export const UpdateProfile = async (req, res) => {
   try {
-    const profile = await profileModel.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        returnDocument: "after",
-        runValidators: true,
-      },
-    );
+    const data = matchedData(req, { locations: ["body"] });
+    const profile = await profileModel.findByIdAndUpdate(req.params.id, data, {
+      returnDocument: "after",
+      runValidators: true,
+    });
     if (!profile) {
       return res.status(404).json({ message: "Perfil no encontrado" });
     }

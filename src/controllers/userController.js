@@ -1,4 +1,6 @@
+import { matchedData } from "express-validator";
 import userModel from "../models/User.js";
+import profileModel from "../models/Profile.js";
 
 export const GetAllUsers = async (req, res) => {
   try {
@@ -24,7 +26,8 @@ export const GetUserId = async (req, res) => {
 
 export const CreateUser = async (req, res) => {
   try {
-    const user = await userModel.create(req.body);
+    const data = matchedData(req, { locations: ["body"] });
+    const user = await userModel.create(data);
     res.status(201).json(user);
   } catch (error) {
     console.log(error);
@@ -34,7 +37,8 @@ export const CreateUser = async (req, res) => {
 
 export const UpdateUser = async (req, res) => {
   try {
-    const user = await userModel.findByIdAndUpdate(req.params.id, req.body, {
+    const data = matchedData(req, { locations: ["body"] });
+    const user = await userModel.findByIdAndUpdate(req.params.id, data, {
       returnDocument: "after",
       runValidators: true,
     });

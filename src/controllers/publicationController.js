@@ -1,3 +1,4 @@
+import { matchedData } from "express-validator";
 import publicationModel from "../models/Publication.js";
 
 export const GetAllPublication = async (req, res) => {
@@ -26,7 +27,8 @@ export const GetPublicationId = async (req, res) => {
 
 export const CreatePublication = async (req, res) => {
   try {
-    const publication = await publicationModel.create(req.body);
+    const data = matchedData(req, { locations: ["body"] });
+    const publication = await publicationModel.create(data);
     res.status(201).json(publication);
   } catch (error) {
     res.status(500).json({ message: "Error al crear la publicacion" });
@@ -35,9 +37,10 @@ export const CreatePublication = async (req, res) => {
 
 export const UpdatePublication = async (req, res) => {
   try {
+    const data = matchedData(req, { locations: ["body"] });
     const publication = await publicationModel.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      data,
       {
         returnDocument: "after",
         runValidators: true,
