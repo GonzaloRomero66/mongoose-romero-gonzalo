@@ -31,3 +31,35 @@ export const CreateUser = async (req, res) => {
     res.status(500).json({ message: "Error al crear el usuario" });
   }
 };
+
+export const UpdateUser = async (req, res) => {
+  try {
+    const user = await userModel.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    res.status(200).json({
+      message: "Usuario actualizado correctamente",
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error al actualizar el usuario" });
+  }
+};
+
+export const DeleteUser = async (req, res) => {
+  try {
+    const user = await userModel.findByIdAndDelete(req.params.id);
+    if (!user) {
+      res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    res.status(200).json({
+      message: "Usuario actualizado correctamente",
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error al eliminar el usuario" });
+  }
+};
