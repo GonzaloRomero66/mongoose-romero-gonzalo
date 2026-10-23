@@ -58,11 +58,20 @@ export const UpdateUser = async (req, res) => {
 
 export const DeleteUser = async (req, res) => {
   try {
-    const user = await userModel.findByIdAndDelete(req.params.id);
+    const user = await userModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        deleted: true,
+      },
+      { returnDocument: "after" },
+    );
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
-    await profileModel.findOneAndDelete({ user_id: user._id });
+    await profileModel.findOneAndUpdate(
+      { user_id: user._id },
+      { deleted: true },
+    );
     res.status(200).json({
       message: "Usuario eliminado correctamente",
     });

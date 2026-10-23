@@ -57,7 +57,15 @@ export const UpdateProfile = async (req, res) => {
 
 export const DeleteProfile = async (req, res) => {
   try {
-    const profile = await profileModel.findByIdAndDelete(req.params.id);
+    const profile = await profileModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        deleted: true,
+      },
+      {
+        returnDocument: "after",
+      },
+    );
     if (!profile) {
       return res.status(404).json({ message: "Perfil no encontrado" });
     }

@@ -62,7 +62,11 @@ export const UpdatePublication = async (req, res) => {
 
 export const DeletePublication = async (req, res) => {
   try {
-    const publication = await publicationModel.findByIdAndDelete(req.params.id);
+    const publication = await publicationModel.findByIdAndUpdate(
+      req.params.id,
+      { deleted: true },
+      { returnDocument: "after" },
+    );
     if (!publication) {
       return res.status(404).json({ message: "Publicacion no encontrada" });
     }
