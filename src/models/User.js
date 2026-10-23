@@ -15,12 +15,6 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
-  profile_id: {
-    type: Schema.Types.ObjectId,
-    ref: "profile",
-    required: true,
-    unique: true,
-  },
 });
 const userModel = model("user", userSchema);
 export default userModel;
