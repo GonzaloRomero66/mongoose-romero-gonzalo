@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import userModel from "../models/User.js";
 
 export const GetAllUsers = async (req, res) => {
@@ -35,7 +34,7 @@ export const CreateUser = async (req, res) => {
 export const UpdateUser = async (req, res) => {
   try {
     const user = await userModel.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+      returnDocument: "after",
       runValidators: true,
     });
     if (!user) {
@@ -57,7 +56,7 @@ export const DeleteUser = async (req, res) => {
       res.status(404).json({ message: "Usuario no encontrado" });
     }
     res.status(200).json({
-      message: "Usuario actualizado correctamente",
+      message: "Usuario eliminado correctamente",
     });
   } catch (error) {
     res.status(500).json({ message: "Error al eliminar el usuario" });
