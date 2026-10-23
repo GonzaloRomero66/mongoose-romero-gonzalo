@@ -1,5 +1,6 @@
 import { matchedData } from "express-validator";
 import profileModel from "../models/Profile.js";
+import publicationModel from "../models/Publication.js";
 
 export const GetAllProfile = async (req, res) => {
   try {
@@ -69,6 +70,10 @@ export const DeleteProfile = async (req, res) => {
     if (!profile) {
       return res.status(404).json({ message: "Perfil no encontrado" });
     }
+    await publicationModel.updateMany(
+      { profile_id: profile._id },
+      { deleted: true },
+    );
     res.status(200).json({
       message: "Perfil eliminado correctamente",
     });

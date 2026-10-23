@@ -1,5 +1,5 @@
 import { body, param } from "express-validator";
-import profileModel from "../models/Profile";
+import profileModel from "../models/Profile.js";
 
 export const validateCreatePublication = [
   body("title").notEmpty().withMessage("El titulo no puede estar vacio"),
