@@ -15,6 +15,12 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
+  publications: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "publication",
+    },
+  ],
 });
 const userModel = model("user", userSchema);
 export default userModel;
