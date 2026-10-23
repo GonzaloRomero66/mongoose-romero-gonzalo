@@ -1,4 +1,5 @@
 import { body, param } from "express-validator";
+import userModel from "../models/User.js";
 
 export const validateCreateProfile = [
   body("username").notEmpty().withMessage("El username no puede estar vacio"),
@@ -10,7 +11,14 @@ export const validateCreateProfile = [
     .notEmpty()
     .withMessage("El id de usuario no puede estar vacio")
     .isMongoId()
-    .withMessage("El id tiene que ser un id valido de mongo"),
+    .withMessage("El id tiene que ser un id valido de mongo")
+    .custom(async (user_id) => {
+      const user = await userModel.findById(user_id);
+      if (!user) {
+        throw new Error("El usuario no existe");
+      }
+      return true;
+    }),
 ];
 
 export const validateUpdateProfile = [
@@ -31,7 +39,15 @@ export const validateUpdateProfile = [
     .notEmpty()
     .withMessage("El id no puede estar vacio")
     .isMongoId()
-    .withMessage("El id tiene que ser un id valido de mongo"),
+    .withMessage("El id tiene que ser un id valido de mongo")
+    .custom(async (user_id) => {
+      const user = await userModel.findById(user_id);
+
+      if (!user) {
+        throw new Error("El usuario no existe");
+      }
+      return true;
+    }),
 ];
 
 export const validateIdProfile = [

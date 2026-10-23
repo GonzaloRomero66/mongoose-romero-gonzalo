@@ -1,4 +1,5 @@
 import { body, param } from "express-validator";
+import profileModel from "../models/Profile";
 
 export const validateCreatePublication = [
   body("title").notEmpty().withMessage("El titulo no puede estar vacio"),
@@ -10,7 +11,15 @@ export const validateCreatePublication = [
     .notEmpty()
     .withMessage("El id de perfil no puede estar vacio")
     .isMongoId()
-    .withMessage("El id tiene que ser un id valido de mongo"),
+    .withMessage("El id tiene que ser un id valido de mongo")
+    .custom(async (profile_id) => {
+      const profile = profileModel.findById(profile_id);
+
+      if (!profile) {
+        throw new Error("El perfil no encontrado");
+      }
+      return true;
+    }),
 ];
 
 export const validateUpdatePublication = [
@@ -31,7 +40,14 @@ export const validateUpdatePublication = [
     .notEmpty()
     .withMessage("El id de perfil no puede estar vacio")
     .isMongoId()
-    .withMessage("El id tiene que ser un id valido de mongo"),
+    .withMessage("El id tiene que ser un id valido de mongo")
+    .custom(async (profile_id) => {
+      const profile = profileModel.findById(profile_id);
+      if (!profile) {
+        throw new Error("El perfil no existe");
+      }
+      return true;
+    }),
 ];
 
 export const validateIdPublication = [
