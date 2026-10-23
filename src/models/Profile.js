@@ -17,6 +17,10 @@ const profileSchema = new Schema({
     required: true,
     unique: true,
   },
+  deleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const profileModel = model("profile", profileSchema);

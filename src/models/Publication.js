@@ -16,6 +16,10 @@ const publicationSchema = new Schema({
     ref: "profile",
     required: true,
   },
+  deleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const publicationModel = model("publication", publicationSchema);
