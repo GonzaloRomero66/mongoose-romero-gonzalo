@@ -56,6 +56,7 @@ export const DeleteUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
+    await profileModel.findOneAndDelete({ user_id: user._id });
     res.status(200).json({
       message: "Usuario eliminado correctamente",
     });
