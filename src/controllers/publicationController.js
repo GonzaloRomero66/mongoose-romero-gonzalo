@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import publicationModel from "../models/Publication.js";
 
 export const GetAllPublication = async (req, res) => {
@@ -31,5 +30,41 @@ export const CreatePublication = async (req, res) => {
     res.status(201).json(publication);
   } catch (error) {
     res.status(500).json({ message: "Error al crear la publicacion" });
+  }
+};
+
+export const UpdatePublication = async (req, res) => {
+  try {
+    const publication = await publicationModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        returnDocument: "after",
+        runValidators: true,
+      },
+    );
+    if (!publication) {
+      return res.status(404).json({ message: "Publicacion no encontrada" });
+    }
+    res.status(200).json({
+      message: "Publicacion actualizada correctamente",
+      publication,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error al actualizar la publicacion" });
+  }
+};
+
+export const DeletePublication = async (req, res) => {
+  try {
+    const publication = await publicationModel.findByIdAndDelete(req.params.id);
+    if (!publication) {
+      return res.status(404).json({ message: "Publicacion no encontrada" });
+    }
+    res.status(200).json({
+      message: "Publicacion eliminada correctamente",
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error al eliminar la publicacion" });
   }
 };

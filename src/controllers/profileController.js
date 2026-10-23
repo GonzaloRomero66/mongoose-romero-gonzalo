@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import profileModel from "../models/Profile.js";
 
 export const GetAllProfile = async (req, res) => {
@@ -29,5 +28,41 @@ export const CreateProfile = async (req, res) => {
     res.status(201).json(profile);
   } catch (error) {
     res.status(500).json({ message: "Error al crear el perfil" });
+  }
+};
+
+export const UpdateProfile = async (req, res) => {
+  try {
+    const profile = await profileModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        returnDocument: "after",
+        runValidators: true,
+      },
+    );
+    if (!profile) {
+      return res.status(404).json({ message: "Perfil no encontrado" });
+    }
+    res.status(200).json({
+      message: "Perfil actualizado correctamente",
+      profile,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error al actualizar el perfil" });
+  }
+};
+
+export const DeleteProfile = async (req, res) => {
+  try {
+    const profile = await profileModel.findByIdAndDelete(req.params.id);
+    if (!profile) {
+      return res.status(404).json({ message: "Perfil no encontrado" });
+    }
+    res.status(200).json({
+      message: "Perfil eliminado correctamente",
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error al eliminar el perfil" });
   }
 };
