@@ -3,7 +3,7 @@ import profileModel from "../models/Profile.js";
 
 export const GetAllProfile = async (req, res) => {
   try {
-    const profiles = await profileModel.find();
+    const profiles = await profileModel.find().populate("user_id");
     res.json(profiles);
   } catch (error) {
     res.status(500).json({ message: "Error en obtener todos los perfiles" });
@@ -12,7 +12,9 @@ export const GetAllProfile = async (req, res) => {
 
 export const GetProfileId = async (req, res) => {
   try {
-    const profile = await profileModel.findById(req.params.id);
+    const profile = await profileModel
+      .findById(req.params.id)
+      .populate("user_id");
 
     if (!profile) {
       return res.status(404).json({ message: "Perfil no encontrado" });

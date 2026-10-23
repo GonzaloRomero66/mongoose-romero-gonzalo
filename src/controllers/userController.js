@@ -4,7 +4,7 @@ import profileModel from "../models/Profile.js";
 
 export const GetAllUsers = async (req, res) => {
   try {
-    const users = await userModel.find();
+    const users = await userModel.find().populate("publications");
     res.json(users);
   } catch (error) {
     res.status(500).json({ message: "Error en obtener todos los usuarios" });
@@ -13,7 +13,9 @@ export const GetAllUsers = async (req, res) => {
 
 export const GetUserId = async (req, res) => {
   try {
-    const user = await userModel.findById(req.params.id);
+    const user = await userModel
+      .findById(req.params.id)
+      .populate("publications");
 
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });

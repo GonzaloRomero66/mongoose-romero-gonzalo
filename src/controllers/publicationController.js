@@ -3,7 +3,7 @@ import publicationModel from "../models/Publication.js";
 
 export const GetAllPublication = async (req, res) => {
   try {
-    const publications = await publicationModel.find();
+    const publications = await publicationModel.find().populate("profile_id");
     res.json(publications);
   } catch (error) {
     res
@@ -14,7 +14,9 @@ export const GetAllPublication = async (req, res) => {
 
 export const GetPublicationId = async (req, res) => {
   try {
-    const publication = await publicationModel.findById(req.params.id);
+    const publication = await publicationModel
+      .findById(req.params.id)
+      .populate("profile_id");
 
     if (!publication) {
       return res.status(404).json({ message: "Publicacion no encontrada" });
