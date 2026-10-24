@@ -85,4 +85,54 @@ export const DeleteUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error al eliminar el usuario" });
   }
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///
+};
+export const AddPublicationToUser = async (req, res) => {
+  try {
+    const data = matchedData(req, { locations: ["body"] });
+
+    const user = await userModel.findById(req.params.id);
+
+    if (!user || user.deleted) {
+      return res.status(404).json({
+        message: "Usuario no encontrado o eliminado",
+      });
+    }
+
+    const publication = await publicationModel.findById(data.publication_id);
+
+    if (!publication || publication.deleted) {
+      return res.status(404).json({
+        message: "Publicación no encontrada o eliminada",
+      });
+    }
+
+    const exists = user.publications.some(
+      (id) => id.toString() === publication._id.toString(),
+    );
+
+    if (exists) {
+      return res.status(400).json({
+        message: "La publicación ya está relacionada con el usuario",
+      });
+    }
+
+    user.publications.push(publication._id);
+    await user.save();
+
+    res.status(200).json({
+      message: "Publicación relacionada correctamente",
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al relacionar la publicación con el usuario",
+    });
+  }
 };

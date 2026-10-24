@@ -1,0 +1,25 @@
+Trabajo Práctico Mongoose
+
+Para instalar y arrancar el servidor seria utilizar estos comandos
+npm install
+node app.js
+
+Configurar las variables de entorno en `.env` usando como referencia `.env.example`.
+
+Modelos
+
+User: usuarios y dirección embebida.
+Profile: perfiles relacionados con usuarios.
+Publication: publicaciones relacionadas con perfiles.
+
+Relaciones
+
+1:1: un usuario tiene un perfil.
+1:N: un perfil puede tener varias publicaciones.
+N:M: los usuarios pueden relacionarse con varias publicaciones.
+
+Propiedad embebida y referencias
+
+La dirección se guarda dentro del usuario porque forma parte de sus datos.
+
+Los perfiles y las publicaciones se guardan en documentos separados y se relacionan mediante referencias de MongoDB.
