@@ -15,6 +15,17 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
+  direccion: {
+    calle: {
+      type: String,
+    },
+    localidad: {
+      type: String,
+    },
+    provincia: {
+      type: String,
+    },
+  },
   publications: [
     {
       type: Schema.Types.ObjectId,
